@@ -1,0 +1,40 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="row mt-4">
+    
+    <div class="col-md-4 text-center">
+        <div class="card shadow">
+            <div class="card-body">
+                {% if profile.image %}
+                    <img src="{{ profile.image.url }}" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-secondary mx-auto mb-3" style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 50px;">
+                        👤
+                    </div>
+                {% endif %}
+                
+                <h3>{{ user.username }}</h3>
+                <span class="badge bg-primary">{{ profile.favorite_game|default:"ゲーム名未設定" }}</span>
+                <p class="mt-3 text-muted">{{ profile.bio|default:"自己紹介はまだありません。" }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">⚙️ プロフィールを編集</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">更新する</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

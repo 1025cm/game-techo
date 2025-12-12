@@ -1,0 +1,41 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-white">
+                    <h3 class="my-2">🖊️ 新しい記録を書く</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">タイトル</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">内容</label>
+                            {{ form.text }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">画像（スクショ）</label>
+                            {{ form.image }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">保存する！</button>
+                            <a href="{% url 'index' %}" class="btn btn-secondary">キャンセル</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        textarea { height: 150px; }
+    </style>
+{% endblock %}

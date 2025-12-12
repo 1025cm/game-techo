@@ -1,0 +1,42 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+
+    <h2 class="mb-4 text-center text-secondary">📜 冒険の記録一覧</h2>
+
+    <div class="row">
+        {% for diary in diaries %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                {% if diary.image %}
+                    <img src="{{ diary.image.url }}" class="card-img-top" alt="画像">
+                {% else %}
+                    <div style="height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; color: gray;">NO IMAGE</div>
+                {% endif %}
+                
+                <div class="card-body">
+    <h5 class="card-title fw-bold">
+        <a href="{% url 'post_detail' pk=diary.pk %}" class="text-decoration-none text-dark">
+            {{ diary.title }}
+        </a>
+    </h5>
+    
+    <p class="card-text mb-2 d-flex align-items-center">
+    {% if diary.author.profile.image %}
+        <img src="{{ diary.author.profile.image.url }}" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+    {% else %}
+        <div class="rounded-circle bg-secondary me-2 d-flex align-items-center justify-content-center text-white" style="width: 30px; height: 30px; font-size: 12px;">👤</div>
+    {% endif %}
+
+    <span class="fw-bold text-dark">{{ diary.author.username }}</span>
+</p>
+
+    <p class="card-text text-muted">{{ diary.text|truncatechars:50 }}</p>
+    <p class="card-text"><small class="text-muted">{{ diary.created_date }}</small></p>
+</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

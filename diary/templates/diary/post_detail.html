@@ -1,0 +1,116 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+            <div class="card shadow-lg">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="画像" style="height: auto; object-fit: contain;">
+                {% endif %}
+
+                <div class="card-body p-5"> <h1 class="fw-bold mb-3">{{ post.title }}</h1>
+                    
+                    <div class="mb-3">
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'like_post' pk=post.pk %}" method="POST">
+                                {% csrf_token %}
+                                {% if user in post.likes.all %}
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <i class="bi bi-heart-fill"></i> いいね！ {{ post.total_likes }}
+                                    </button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-outline-secondary">
+                                        <i class="bi bi-heart"></i> いいね！ {{ post.total_likes }}
+                                    </button>
+                                {% endif %}
+                            </form>
+                        {% else %}
+                             <span class="text-danger"><i class="bi bi-heart-fill"></i> {{ post.total_likes }}</span>
+                        {% endif %}
+                    </div>
+                    <p class="text-muted border-bottom pb-3">
+                        <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
+                        {% if post.author.profile.image %}
+                            <img src="{{ post.author.profile.image.url }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary me-3 d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px; font-size: 20px;">👤</div>
+                        {% endif %}
+                        
+                        <div>
+                            <div class="fw-bold">{{ post.author.username }}</div>
+                            <small class="text-muted">推しゲー：{{ post.author.profile.favorite_game|default:"設定なし" }}</small>
+                        </div>
+                    </div>
+                    <p class="text-muted border-bottom pb-3">
+                        📅 書いた日：{{ post.created_date }}
+                    </p>
+                    
+                    <div class="mt-4" style="font-size: 18px; line-height: 1.8;">
+                        {{ post.text|linebreaksbr }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'index' %}" class="btn btn-secondary rounded-pill px-4 me-2">
+                    🔙 戻る
+                </a>
+                
+                {% if user == post.author %}
+                    <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-warning rounded-pill px-4 me-2">
+                        ✏️ 編集
+                    </a>
+                    <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger rounded-pill px-4" onclick="return confirm('本当に削除しますか？');">
+                        🗑️ 削除
+                    </a>
+                {% endif %}
+                </div>
+                <hr class="my-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h4 class="mb-4">💬 コメント（{{ post.comments.count }}件）</h4>
+
+            {% if user.is_authenticated %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <form action="{% url 'add_comment_to_post' pk=post.pk %}" method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <textarea name="text" class="form-control" rows="3" placeholder="感想や質問を書いてみよう！"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">送信する</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center">
+                    コメントを書くには <a href="{% url 'login' %}">ログイン</a> してください。
+                </div>
+            {% endif %}
+
+            {% for comment in post.comments.all %}
+                <div class="card mb-3 border-0 bg-light">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center mb-2">
+                                {% if comment.author.profile.image %}
+                                    <img src="{{ comment.author.profile.image.url }}" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                {% else %}
+                                    <div class="rounded-circle bg-secondary me-2 d-flex align-items-center justify-content-center text-white" style="width: 30px; height: 30px; font-size: 12px;">👤</div>
+                                {% endif %}
+                                <span class="fw-bold me-2">{{ comment.author.username }}</span>
+                                <small class="text-muted">{{ comment.created_date }}</small>
+                            </div>
+                        </div>
+                        <p class="mb-0">{{ comment.text|linebreaksbr }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted text-center">まだコメントはありません。一番乗りになろう！</p>
+            {% endfor %}
+            
+        </div>
+    </div>
+{% endblock %}

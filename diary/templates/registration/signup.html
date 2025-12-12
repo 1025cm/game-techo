@@ -1,0 +1,38 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow mt-5">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">📝 新規ユーザー登録</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted d-block">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    
+                    <button type="submit" class="btn btn-success w-100 mt-3">登録してはじめる！</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    ul { list-style: none; padding: 0; margin: 0; font-size: 0.8em; color: gray; }
+</style>
+{% endblock %}
