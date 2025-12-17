@@ -6,9 +6,44 @@
     <title>ゲーム手帳</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; } /* 背景を少しグレーに */
-        .card-img-top { height: 200px; object-fit: cover; } /* 画像の大きさを揃える */
+        /* 全体のフォントを丸文字にする */
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background-color: #fff0f5; /* 背景をうっすらピンク（ラベンダーブラッシュ）に */
+            color: #5d5d5d; /* 文字は真っ黒じゃなくて、優しいグレーに */
+        }
+
+        /* ナビゲーションバー（上の帯）をピンクに */
+        .navbar {
+            background-color: #ffb6c1 !important; /* パステルピンク */
+            border-bottom: 3px solid #ff69b4; /* 下の線を濃いピンクに */
+        }
+
+        /* カード（日記の枠）を丸く、影をふんわりさせる */
+        .card {
+            border-radius: 20px; /* 角をすごく丸くする */
+            border: none; /* 枠線を消す */
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2); /* ピンク色の影 */
+        }
+
+        /* ボタンを可愛くする */
+        .btn-primary {
+            background-color: #ff69b4; /* ホットピンク */
+            border-color: #ff69b4;
+            border-radius: 50px; /* 楕円形にする */
+        }
+        .btn-primary:hover {
+            background-color: #ff1493; /* マウスを乗せたら濃くする */
+        }
+
+        /* 画像の角も丸くする */
+        .card-img-top, img {
+            border-radius: 20px;
+        }
     </style>
   </head>
   <body>
